@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agreekultural Solutions — Όλη η Ελλάδα — Trailer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#3F5C22;
+    --field:#4F771D;
+    --field-light:#90A955;
+    --wheat:#D9A441;
+    --soil:#B5551F;
+    --aegean:#2E5F73;
+    --cream:#F6F1E4;
+    --ink:#1C2116;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    height:100%;
+    margin:0;
+    background:#0e130a;
+    font-family:'Inter',system-ui,sans-serif;
+    overscroll-behavior:none;
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+
+  #stage{
+    position:relative;
+    width:100%;
+    height:100%;
+    min-height:100svh;
+    overflow:hidden;
+    color:var(--cream);
+    -webkit-user-select:none;
+    user-select:none;
+  }
+
+  .scene{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    padding:calc(64px + env(safe-area-inset-top,0px)) 6vw calc(120px + env(safe-area-inset-bottom,0px));
+    opacity:0;
+    transform:scale(1.045);
+    pointer-events:none;
+    transition:opacity .55s ease, transform 1.1s cubic-bezier(.16,.7,.24,1);
+  }
+  .scene.active{
+    opacity:1;
+    transform:scale(1);
+    pointer-events:auto;
+    z-index:2;
+  }
+  .scene.prev{ opacity:0; transform:scale(1); z-index:1; }
+
+  .scene-bg{ position:absolute; inset:0; z-index:0; }
+  .scene-bg::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,.06) 38%, rgba(0,0,0,.68) 100%);
+  }
+
+  .grain{
+    position:absolute; inset:0; z-index:1;
+    background-image:radial-gradient(rgba(255,255,255,.55) .6px, transparent .6px);
+    background-size:3px 3px;
+    opacity:.05;
+    mix-blend-mode:overlay;
+  }
+
+  .motif{
+    position:absolute; z-index:1; opacity:.5;
+    animation:drift 9s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%,100%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-14px) rotate(4deg); }
+  }
+
+  .eyebrow-wrap{
+    position:relative; z-index:2;
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:14px;
+  }
+  .icon-badge{
+    width:40px; height:40px; border-radius:50%;
+    background:rgba(246,241,228,.14);
+    border:1px solid rgba(246,241,228,.35);
+    display:flex; align-items:center; justify-content:center;
+    backdrop-filter:blur(2px);
+  }
+  .icon-badge svg{ width:20px; height:20px; }
+  .eyebrow{
+    font-size:.8rem;
+    letter-spacing:.02em;
+    color:rgba(246,241,228,.85);
+    font-weight:500;
+  }
+
+  .headline{
+    position:relative; z-index:2;
+    font-family:'Noto Serif', serif;
+    font-weight:700;
+    font-size:clamp(2rem, 7vw, 3.4rem);
+    line-height:1.08;
+    margin:0 0 12px;
+    max-width:12ch;
+    text-wrap:balance;
+  }
+  .sub{
+    position:relative; z-index:2;
+    font-size:clamp(.98rem, 2.6vw, 1.15rem);
+    line-height:1.5;
+    color:rgba(246,241,228,.92);
+    max-width:34ch;
+    margin:0;
+    font-weight:400;
+  }
+
+  .center-scene{
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding-bottom:calc(64px + env(safe-area-inset-bottom,0px));
+  }
+  .wordmark{
+    position:relative; z-index:2;
+    font-family:'Noto Serif', serif;
+    font-weight:700;
+    font-size:clamp(2.2rem, 9vw, 4rem);
+    letter-spacing:-.01em;
+    margin:0;
+  }
+  .wordmark em{
+    font-style:normal;
+    color:var(--field-light);
+  }
+  .kicker{
+    position:relative; z-index:2;
+    font-size:clamp(.85rem, 2.4vw, 1rem);
+    letter-spacing:.03em;
+    color:var(--field-light);
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  .tagline{
+    position:relative; z-index:2;
+    font-size:clamp(1rem, 3vw, 1.25rem);
+    color:rgba(246,241,228,.9);
+    margin-top:10px;
+    max-width:30ch;
+  }
+  .cta-pill{
+    position:relative; z-index:2;
+    margin-top:30px;
+    display:inline-flex; align-items:center; gap:8px;
+    padding:14px 26px;
+    background:var(--field-light);
+    color:#1B2410;
+    font-weight:600;
+    border-radius:999px;
+    font-size:1rem;
+  }
+
+  #progress{
+    position:absolute;
+    top:calc(16px + env(safe-area-inset-top,0px));
+    left:6vw; right:6vw;
+    z-index:5;
+    display:flex; gap:6px;
+  }
+  .bar{
+    flex:1; height:3px; border-radius:999px;
+    background:rgba(255,255,255,.28);
+    overflow:hidden;
+    cursor:pointer;
+  }
+  .bar-fill{ height:100%; width:0%; background:#fff; border-radius:999px; }
+  .bar-fill.run{ animation:fill var(--dur,3400ms) linear forwards; }
+  .bar-fill.filled{ width:100%; }
+  @keyframes fill{ from{width:0%;} to{width:100%;} }
+
+  #controls{
+    position:absolute;
+    bottom:calc(28px + env(safe-area-inset-bottom,0px));
+    left:6vw; right:6vw;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .brandmini{
+    font-family:'Noto Serif', serif;
+    font-weight:700;
+    font-size:.95rem;
+    color:rgba(246,241,228,.9);
+  }
+  .btns{ display:flex; gap:10px; }
+  .ctrl-btn{
+    width:38px; height:38px;
+    border-radius:50%;
+    border:1px solid rgba(246,241,228,.4);
+    background:rgba(0,0,0,.22);
+    color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .ctrl-btn svg{ width:16px; height:16px; }
+  .ctrl-btn:focus-visible, .bar:focus-visible{
+    outline:2px solid var(--field-light);
+    outline-offset:2px;
+  }
+
+  .tapzone{ position:absolute; inset:0; z-index:3; display:flex; }
+  .tapzone div{ flex:1; }
+
+  @media (prefers-reduced-motion: reduce){
+    .scene, .motif{ transition:none !important; animation:none !important; }
+    .bar-fill.run{ animation-duration:1ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div id="stage" role="img" aria-label="Trailer βίντεο για την ενότητα Όλη η Ελλάδα της εφαρμογής Agreekultural Solutions">
+
+  <div id="progress"></div>
+  <div id="scenes"></div>
+
+  <div class="tapzone" id="tapzone">
+    <div id="tap-prev" aria-hidden="true"></div>
+    <div id="tap-next" aria-hidden="true"></div>
+  </div>
+
+  <div id="controls">
+    <span class="brandmini">Όλη η Ελλάδα</span>
+    <div class="btns">
+      <button class="ctrl-btn" id="btnReplay" aria-label="Επανάληψη">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+      </button>
+      <button class="ctrl-btn" id="btnPlay" aria-label="Παύση">
+        <svg id="iconPause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg>
+        <svg id="iconPlay" style="display:none" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const icons = {
+  pin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.3 7-12a7 7 0 0 0-14 0c0 5.7 7 12 7 12z"></path><circle cx="12" cy="9" r="2.4"></circle></svg>',
+  cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a5 5 0 1 1 1.14-9.86A6 6 0 0 1 21 11.5a4 4 0 0 1-.5 7.5"></path></svg>',
+  book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15z"></path></svg>',
+  bank: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6"></path><path d="M5 10v9M10 10v9M14 10v9M19 10v9"></path><path d="M3 21h18"></path></svg>',
+  drought: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 7.6 6 11a6 6 0 0 1-12 0c0-3.4 3-7 6-11z"></path><path d="M9.5 15.5a2.5 2.5 0 0 0 2.5 2.5"></path></svg>',
+  ribbon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"></circle><path d="M9 12.5 7 21l5-3 5 3-2-8.5"></path></svg>',
+  landmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"></path><path d="M5 21V10M9 21V10M15 21V10M19 21V10"></path><path d="M3 10l9-6 9 6"></path></svg>',
+};
+
+const scenes = [
+  {
+    type:'intro',
+    tone:['#1c2c10','#2c3d17'],
+    kicker:'AGREEKULTURAL SOLUTIONS',
+    word:['ΟΛΗ Η ', 'ΕΛΛΑΔΑ'],
+    tag:'Περιφέρειες, νομοί, βουνά και θάλασσες — μία μπάρα αναζήτησης, μία εφαρμογή.'
+  },
+  {
+    icon:'pin', tone:['#2e4416','#1a2a0d'],
+    eyebrow:'ΔΙΑΔΡΑΣΤΙΚΟΣ ΧΑΡΤΗΣ',
+    headline:'Πάτησε μια περιφέρεια, μια θάλασσα ή ένα βουνό',
+    sub:'Και μπες κατευθείαν στα δικά του δεδομένα — καμία περιοχή της χώρας δεν μένει έξω.'
+  },
+  {
+    icon:'cloud', tone:['#274a5c','#173242'],
+    eyebrow:'ΚΑΙΡΟΣ ΠΑΝΤΟΥ',
+    headline:'Πρόγνωση 5 ημερών για κάθε περιφέρεια και πόλη',
+    sub:'Επίλεξε τόπο και βλέπεις αμέσως τι έρχεται τις επόμενες μέρες.'
+  },
+  {
+    icon:'book', tone:['#7a5a1c','#4d380f'],
+    eyebrow:'ΕΘΝΙΚΟΙ ΚΑΤΑΛΟΓΟΙ',
+    headline:'Κάθε καλλιέργεια, κάθε ψάρι, όλης της χώρας',
+    sub:'Πλήρεις, αλφαβητικοί κατάλογοι καλλιεργειών, παθήσεων, ειδών αλιείας και κινδύνων.'
+  },
+  {
+    icon:'bank', tone:['#345c1c','#1f3810'],
+    eyebrow:'ΕΘΝΙΚΗ ΤΡΑΠΕΖΑ ΤΙΜΩΝ',
+    headline:'Το επίσημο δελτίο τιμών, δίπλα στα δικά σου',
+    sub:'Σύγκρινε ό,τι παρακολουθείς εθνικά με τα προσωπικά σου Οικονομικά.'
+  },
+  {
+    icon:'drought', tone:['#5c2e14','#33170a'],
+    eyebrow:'ΧΑΡΤΕΣ ΚΙΝΔΥΝΟΥ',
+    headline:'Δείκτης πυρκαγιάς & ξηρασίας, σε πραγματικό χρόνο',
+    sub:'Δορυφορικά δεδομένα EFFIS, NASA και Copernicus για κάθε περιοχή.'
+  },
+  {
+    icon:'ribbon', tone:['#7a3d1a','#4a2410'],
+    eyebrow:'ΤΑΥΤΟΤΗΤΑ ΤΟΥ ΤΟΠΟΥ',
+    headline:'Αυτόχθονες φυλές & προϊόντα ΠΟΠ/ΠΓΕ/ΕΠΙΠ',
+    sub:'Ο πλήρης εθνικός κατάλογος — νομοί, βουνά και ιδιαίτερες περιοχές μαζί.'
+  },
+  {
+    icon:'landmark', tone:['#1e4a5e','#0f3040'],
+    eyebrow:'ΙΔΙΑΙΤΕΡΕΣ ΠΕΡΙΟΧΕΣ & ΦΟΡΕΙΣ',
+    headline:'Άγιον Όρος, Μετέωρα, Σαντορίνη — και ποιον να απευθυνθείς',
+    sub:'ΔΣΒ, ΟΣΔΕ, συνεταιρισμοί και όλοι οι αρμόδιοι φορείς της χώρας, σε ένα σημείο.'
+  },
+  {
+    type:'outro',
+    tone:['#1c2c10','#2c3d17'],
+    tag:'Όλη η ελληνική ύπαιθρος, οργανωμένη σε μία εφαρμογή.',
+    cta:'Εξερεύνησε την Ελλάδα'
+  },
+];
+
+const DUR = 3800;
+const sceneWrap = document.getElementById('scenes');
+const progWrap = document.getElementById('progress');
+let idx = 0, playing = true, els = [];
+
+function renderMotif(){
+  return `<svg class="motif" style="right:6%; top:14%; width:120px; height:120px; animation-duration:${7+Math.random()*4}s" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1"><circle cx="12" cy="12" r="10"></circle></svg>`;
+}
+
+scenes.forEach((s, i) => {
+  const el = document.createElement('div');
+  el.className = 'scene';
+  const [c1,c2] = s.tone;
+  let inner = `<div class="scene-bg" style="background:radial-gradient(120% 90% at 78% 8%, ${c2} 0%, ${c1} 62%)"></div><div class="grain"></div>${renderMotif()}`;
+
+  if(s.type === 'intro'){
+    inner += `
+      <div class="center-scene" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;">
+        <p class="kicker">${s.kicker}</p>
+        <p class="wordmark">${s.word[0]}<em>${s.word[1]}</em></p>
+        <p class="tagline">${s.tag}</p>
+      </div>`;
+    el.style.padding = '0';
+  } else if(s.type === 'outro'){
+    inner += `
+      <div class="center-scene" style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;">
+        <p class="wordmark">ΟΛΗ Η <em>ΕΛΛΑΔΑ</em></p>
+        <p class="tagline">${s.tag}</p>
+        <span class="cta-pill">${s.cta}</span>
+      </div>`;
+    el.style.padding = '0';
+  } else {
+    inner += `
+      <div class="eyebrow-wrap">
+        <span class="icon-badge">${icons[s.icon]}</span>
+        <span class="eyebrow">${s.eyebrow}</span>
+      </div>
+      <h2 class="headline">${s.headline}</h2>
+      <p class="sub">${s.sub}</p>`;
+  }
+  el.innerHTML = inner;
+  sceneWrap.appendChild(el);
+  els.push(el);
+
+  const bar = document.createElement('div');
+  bar.className = 'bar';
+  bar.tabIndex = 0;
+  bar.setAttribute('role','button');
+  bar.setAttribute('aria-label', `Σκηνή ${i+1}`);
+  bar.innerHTML = '<div class="bar-fill"></div>';
+  bar.addEventListener('click', () => goTo(i));
+  progWrap.appendChild(bar);
+});
+
+const bars = () => Array.from(progWrap.children);
+let timer = null;
+function clearTimer(){ if(timer) clearTimeout(timer); }
+
+function paint(){
+  els.forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+    el.classList.toggle('prev', i < idx);
+  });
+  bars().forEach((b, i) => {
+    const fill = b.querySelector('.bar-fill');
+    fill.className = 'bar-fill';
+    if(i < idx){ fill.classList.add('filled'); }
+    if(i === idx && playing){
+      fill.style.setProperty('--dur', DUR+'ms');
+      fill.classList.add('run');
+    }
+  });
+}
+
+function schedule(){
+  clearTimer();
+  if(!playing) return;
+  timer = setTimeout(next, DUR);
+}
+function next(){ idx = (idx + 1) % scenes.length; paint(); schedule(); }
+function prevScene(){ idx = (idx - 1 + scenes.length) % scenes.length; paint(); schedule(); }
+function goTo(i){ idx = i; paint(); schedule(); }
+
+document.getElementById('tap-next').addEventListener('click', next);
+document.getElementById('tap-prev').addEventListener('click', prevScene);
+
+const btnPlay = document.getElementById('btnPlay');
+const iconPlay = document.getElementById('iconPlay');
+const iconPause = document.getElementById('iconPause');
+btnPlay.addEventListener('click', () => {
+  playing = !playing;
+  iconPlay.style.display = playing ? 'none' : 'block';
+  iconPause.style.display = playing ? 'block' : 'none';
+  btnPlay.setAttribute('aria-label', playing ? 'Παύση' : 'Αναπαραγωγή');
+  paint();
+  schedule();
+});
+
+document.getElementById('btnReplay').addEventListener('click', () => {
+  idx = 0; playing = true;
+  iconPlay.style.display = 'none'; iconPause.style.display = 'block';
+  paint(); schedule();
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'ArrowRight') next();
+  if(e.key === 'ArrowLeft') prevScene();
+  if(e.key === ' '){ e.preventDefault(); btnPlay.click(); }
+});
+
+paint();
+schedule();
+</script>
+</body>
+</html>
